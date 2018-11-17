@@ -80,6 +80,77 @@ Status CreateList_Norm(LinkList *L, Elemtype e)
     return OK;
 }
 
+//get length
+int getLength(LinkList L)
+{
+    int i = 0;
+    LinkList p = L->next;
+    while(p)
+    {
+        i++;
+        p = p->next;
+    }
+    return i;
+}
+
+//get i'th element
+Status getElem(LinkList L, int i, Elemtype *e)
+{
+    int max_length = 0,j = 0;
+    LinkList p = L->next;
+    if(!L)
+    {
+        return ERROR;
+    }
+
+    max_length =getLength(L);
+    if(i<1 || i>max_length)
+    {
+        return OVERFLOW;
+    }
+
+    for(j = 1 ; j < i; j++)
+    {
+        p = p->next;
+    }
+
+    *e = p->data;
+    return OK;
+
+}
+
+Status InsertElem(LinkList *L, int i ,Elemtype e)
+{
+    int max_length = 0,j = 1;
+    LinkList p = (*L)->next;
+    LinkList q,new;
+    q = *L;
+    new = (LinkList)malloc(sizeof(LNode));
+    new->data = e;
+    new->next = NULL;
+
+    if(!*L)
+    {
+        return ERROR;
+    }
+
+    max_length =getLength(*L);
+    if(i<0 || i>max_length+1)
+    {
+        return OVERFLOW;
+    }
+
+    for(j = 1; j < i; j++)
+    {
+        q = p;
+        p = p->next;
+    }
+    q->next = new;
+    new->next = p;
+
+    return OK;
+}
+
 void visit(Elemtype e)
 {
     printf("%d ", e);
@@ -104,7 +175,7 @@ int main()
 {
     LinkList L;
     InitList(&L);
-    Elemtype e;
+    Elemtype e = 0;
     int i;
     if(L)
     {
@@ -130,6 +201,24 @@ int main()
 
     TraverseList(L,visit);
 
+    printf("getLength Function\n");
+    printf("The List Length is: %d \n",getLength(L));
+
+    printf("getElem Function\n");
+    getElem(L,3,&e);
+    printf("The 3rd number is: %d \n",e);
+
+    printf("InsertFunction: 1st position\n");
+    InsertElem(&L,1,100);
+    TraverseList(L,visit);
+
+    printf("\nInsertFunction: 5th position\n");
+    InsertElem(&L,5,100);
+    TraverseList(L,visit);
+
+    printf("\nInsertFunction:last position\n");
+    InsertElem(&L,getLength(L)+1,100);
+    TraverseList(L,visit);
 
     return 1;
 }
