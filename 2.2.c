@@ -151,6 +151,30 @@ Status InsertElem(LinkList *L, int i ,Elemtype e)
     return OK;
 }
 
+Status DeleteElem(LinkList *L, int i, Elemtype *e)
+{
+    int max_length = 0,j = 1;
+    LinkList p = (*L)->next;
+    LinkList q;
+    q = *L;
+    max_length = getLength(*L);
+    if(i<1 || i>max_length)
+    {
+        return OVERFLOW;
+    }
+
+    for(j = 1; j < i; j++)
+    {
+        q = p;
+        p = p->next;
+    }
+    *e = p->data;
+    q->next = p->next;
+    free(p);
+
+    return OK;
+}
+
 void visit(Elemtype e)
 {
     printf("%d ", e);
@@ -220,5 +244,14 @@ int main()
     InsertElem(&L,getLength(L)+1,100);
     TraverseList(L,visit);
 
+    printf("\nDeleteFunction:1st element \n");
+    DeleteElem(&L,1,&e);
+    printf("The 1st delete number is: %d \n", e);
+    TraverseList(L,visit);
+
+    printf("\nDeleteFunction:3st element \n");
+    DeleteElem(&L,3, &e);
+    printf("The 3rd delete number is: %d \n", e);
+    TraverseList(L,visit);
     return 1;
 }
