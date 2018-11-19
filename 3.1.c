@@ -53,12 +53,13 @@ Status Push(SqStack *S, Elemtype e)
 
 Status Pop(SqStack *S, Elemtype *e)
 {
-    if(S->top <= S->base)
+    if(S->top == S->base)
     {
         exit(OVERFLOW);
     }
     S->top -= sizeof(Elemtype);
    *e = *(S->top);
+    printf("Pop  number is: %d\n", *S->top);
     return OK;
 }
 
@@ -85,12 +86,12 @@ int main()
     InitStack(&S);
 
     printf("Push Function\n");
-    for(i = 0 ; i<5 ; i++)
+    for(i = 0 ; i<8 ; i++)
     {
         Push(&S,i*10);
     }
 
-    for(i = 0; i<4; i++)
+    for(i = 0; i<6; i++)
     {
         Pop(&S,&e);
         printf("The %dth elem is: %d \n",i,e);
